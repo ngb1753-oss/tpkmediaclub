@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLB T&MC - Bộ sưu tập Ảnh</title>
+    <!-- Font Awesome for icons (giữ nguyên như trong footer) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Image Grid - Giữ nguyên thiết kế ban đầu */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .media-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Image Frame */
+        .image-frame {
+            width: 100%;
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .media-item:hover .image-frame img {
+            transform: scale(1.05);
+        }
+
+        .image-caption {
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            color: #555;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        /* Modal phóng to ảnh - CHỈ DÙNG CSS */
+        .image-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        /* Target modal khi nhấp vào link */
+        .image-link:focus {
+            outline: none;
+        }
+
+        .image-link:focus .image-frame::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 9998;
+            animation: fadeIn 0.3s;
+        }
+
+        .image-link:focus .image-frame img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            max-width: 90vw;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            z-index: 9999;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+            border-radius: 8px;
+            animation: zoomIn 0.3s;
+        }
+
+        /* Thêm nút đóng */
+        .image-link:focus .image-frame::before {
+            content: '✕';
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            z-index: 10000;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* Ẩn caption khi phóng to */
+        .image-link:focus ~ .image-caption {
+            opacity: 0;
+        }
+
+        /* Lightbox Styles */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 85vh;
+    margin: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+}
+
+#lightbox-img {
+    display: block;
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.lightbox-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 20px 15px 15px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.lightbox-content:hover .lightbox-caption {
+    transform: translateY(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    background: var(--primary-red);
+    transform: rotate(90deg);
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.prev-btn {
+    left: 20px;
+}
+
+.next-btn {
+    right: 20px;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background: var(--primary-blue);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-counter {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    color: white;
+    font-size: 1rem;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-weight: 500;
+}
+
+/* Overlay cho media-item */
+.media-item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 136, 229, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.media-item:hover .image-overlay {
+    opacity: 1;
+}
+
+.image-overlay i {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    animation: bounce 2s infinite;
+}
+
+.image-overlay span {
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 5px 15px;
+    border-radius: 25px;
+}
+
+/* Animation cho overlay */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Responsive cho Lightbox */
+@media screen and (max-width: 768px) {
+    .close-btn {
+        top: 10px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 30px;
+    }
+    
+    .prev-btn, .next-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .prev-btn {
+        left: 10px;
+    }
+    
+    .next-btn {
+        right: 10px;
+    }
+    
+    .lightbox-counter {
+        top: 10px;
+        left: 15px;
+        font-size: 0.9rem;
+        padding: 5px 12px;
+    }
+    
+    .lightbox-caption {
+        font-size: 0.9rem;
+        padding: 15px 10px 10px;
+    }
+    
+    .image-overlay i {
+        font-size: 2rem;
+    }
+    
+    .image-overlay span {
+        font-size: 0.9rem;
+        padding: 4px 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .prev-btn, .next-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .lightbox-counter {
+        font-size: 0.8rem;
+    }
+    
+    .image-overlay i {
+        font-size: 1.5rem;
+    }
+    
+    .image-overlay span {
+        font-size: 0.8rem;
+        padding: 3px 10px;
+    }
+}
+
+/* Animation cho Lightbox */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.lightbox-content {
+    animation: zoomIn 0.3s ease;
+}
+
+/* Loading indicator */
+#lightbox-img.loading {
+    opacity: 0.5;
+}
+
+#lightbox-img.loaded {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* Thumbnail quality */
+.image-frame img {
+    transition: all 0.3s ease;
+}
+
+.media-item:hover .image-frame img {
+    transform: scale(1.1);
+}
+
+/* Section Header Styles */
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    color: var(--dark-blue);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.section-header h2 i {
+    color: var(--primary-red);
+    font-size: 2.5rem;
+}
+
+.section-description {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+/* Instruction Card */
+.instruction-card {
+    margin-top: 40px;
+    padding: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+.instruction-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+}
+
+.instruction-card h3 i {
+    font-size: 1.5rem;
+}
+
+.instruction-content p {
+    margin: 10px 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.instruction-content p:before {
+    content: '•';
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CÂU LẠC BỘ TRUYỀN THÔNG T&MC</h1>
+            <p class="sub-title">Trường THPT Tân Phước Khánh - Tiếp bước yêu thương</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li>Trường THPT Tân Phước Khánh</li>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                <li><a href="bo-suu-tap-anh.html" class="active">Bộ sưu tập ảnh</a></li>
+                <li><a href="am-nhac.html">Âm nhạc</a></li>
+                <li><a href="video.html">Video</a></li>
+                <li><a href="lien-he.html">Đăng ký tham gia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="section">
+                <h2>📸 Bộ sưu tập ảnh CLB</h2>
+                
+                <div class="event-section">
+                    <h3 class="event-title">
+                        <i class="fas fa-flower" style="color: #ff6b6b;">🌸</i> 
+                        HỘI CHỢ XUÂN
+                    </h3>
+                    <div class="image-grid">
+                        <!-- 6 ảnh Hội chợ Xuân -->
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx1.jpg" 
+                                     alt="Hội chợ Xuân 1"
+                                     data-full="hcx1.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 10A1</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx2.jpg" 
+                                     alt="Hội chợ Xuân 2"
+                                     data-full="hcx2.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 10A2</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx3.jpg" 
+                                     alt="Hội chợ Xuân 3"
+                                     data-full="hcx3.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 10A4</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx4.jpg" 
+                                     alt="Hội chợ Xuân 4"
+                                     data-full="hcx4.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 11A2</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx5.jpg" 
+                                     alt="Hội chợ Xuân 5"
+                                     data-full="hcx5.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 12A1</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="hcx6.jpg" 
+                                     alt="Hội chợ Xuân 6"
+                                     data-full="hcx6.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Gian hàng ẩm thực 10A9</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHU VỰC 2: TIẾP SỨC MÙA THI -->
+                <div class="event-section">
+                    <h3 class="event-title">
+                        <i class="fas fa-hands-helping" style="color: #4ecdc4;"></i> 
+                        TIẾP SỨC MÙA THI
+                    </h3>
+                    <div class="image-grid">
+                        <!-- 6 ảnh Tiếp sức mùa thi -->
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt1.jpg" 
+                                     alt="Tiếp sức mùa thi 1"
+                                     data-full="tsmt1.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Đội hình tiếp sức</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt2.jpg" 
+                                     alt="Tiếp sức mùa thi 2"
+                                     data-full="tsmt2.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Chụp ảnh lưu niệm</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt3.jpg" 
+                                     alt="Tiếp sức mùa thi 3"
+                                     data-full="tsmt3.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Hướng dẫn điểm thi</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt4.jpg" 
+                                     alt="Tiếp sức mùa thi 4"
+                                     data-full="tsmt4.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Đưa đón thí sinh</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt5.jpg" 
+                                     alt="Tiếp sức mùa thi 5"
+                                     data-full="tsmt5.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Động viên tinh thần</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="tsmt6.jpg" 
+                                     alt="Tiếp sức mùa thi 6"
+                                     data-full="tsmt6.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Hỗ trợ thí sinh</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KHU VỰC 3: VĂN NGHỆ 26/3 -->
+                <div class="event-section">
+                    <h3 class="event-title">
+                        <i class="fas fa-music" style="color: #9b59b6;"></i> 
+                        VĂN NGHỆ 26/3
+                    </h3>
+                    <div class="image-grid">
+                        <!-- 6 ảnh Văn nghệ 26/3 -->
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2631.jpg" 
+                                     alt="Văn nghệ 26/3 1"
+                                     data-full="anh2631.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Đơn ca</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2632.jpg" 
+                                     alt="Văn nghệ 26/3 2"
+                                     data-full="anh2632.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Múa hiện đại</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2633.jpg" 
+                                     alt="Văn nghệ 26/3 3"
+                                     data-full="anh2633.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Nhảy tập thể</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2634.jpg" 
+                                     alt="Văn nghệ 26/3 4"
+                                     data-full="anh2634.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Nhảy tập thể</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2635.jpg" 
+                                     alt="Văn nghệ 26/3 5"
+                                     data-full="anh2635.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Nhảy tập thể</p>
+                        </div>
+                        
+                        <div class="media-item" onclick="openLightbox(this)">
+                            <div class="image-frame">
+                                <img src="anh2636.jpg" 
+                                     alt="Văn nghệ 26/3 6"
+                                     data-full="anh2636.jpg">
+                            </div>
+                            <div class="image-overlay">
+                                <i class="fas fa-search-plus"></i>
+                                <span>Xem ảnh lớn</span>
+                            </div>
+                            <p class="image-caption">Kết thúc trình diễn</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="note-box">
+                    <p>📝 <strong>Xem thêm chi tiết tại:</strong> <a href="https://www.facebook.com/p/TMC-CLB-Truy%E1%BB%81n-Th%C3%B4ng-Tr%C6%B0%E1%BB%9Dng-THPT-T%C3%A2n-Ph%C6%B0%E1%BB%9Bc-Kh%C3%A1nh-61551566138466/">T&MC - CLB Truyền Thông Trường THPT Tân Phước Khánh</a></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- LIGHTBOX MODAL -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="close-btn" onclick="closeLightbox(event)">&times;</span>
+        <span class="prev-btn" onclick="changeImage(-1)">&#10094;</span>
+        <span class="next-btn" onclick="changeImage(1)">&#10095;</span>
+        
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Ảnh phóng to">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+        <div class="lightbox-counter" id="lightbox-counter">1 / 18</div>
+    </div>
+
+    <!-- JavaScript cho Lightbox -->
+    <script>
+        let currentImageIndex = 0;
+        let images = [];
+
+        // Thu thập tất cả ảnh khi trang load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lấy tất cả các media-item
+            const mediaItems = document.querySelectorAll('.media-item');
+            images = Array.from(mediaItems).map(item => {
+                const img = item.querySelector('img');
+                return {
+                    src: img.getAttribute('data-full') || img.src,
+                    caption: item.querySelector('.image-caption').textContent
+                };
+            });
+        });
+
+        function openLightbox(element) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const counter = document.getElementById('lightbox-counter');
+            
+            // Tìm index của ảnh được click
+            const mediaItems = document.querySelectorAll('.media-item');
+            currentImageIndex = Array.from(mediaItems).indexOf(element);
+            
+            // Cập nhật ảnh và caption
+            updateLightboxImage();
+            
+            // Hiển thị lightbox
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Chặn scroll
+        }
+
+        function updateLightboxImage() {
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const counter = document.getElementById('lightbox-counter');
+            
+            lightboxImg.src = images[currentImageIndex].src;
+            lightboxCaption.textContent = images[currentImageIndex].caption;
+            counter.textContent = `${currentImageIndex + 1} / ${images.length}`;
+        }
+
+        function closeLightbox(event) {
+            if (event.target === document.getElementById('lightbox') || 
+                event.target.classList.contains('close-btn')) {
+                document.getElementById('lightbox').style.display = 'none';
+                document.body.style.overflow = 'auto'; // Cho phép scroll lại
+            }
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            
+            // Vòng lặp
+            if (currentImageIndex >= images.length) {
+                currentImageIndex = 0;
+            } else if (currentImageIndex < 0) {
+                currentImageIndex = images.length - 1;
+            }
+            
+            updateLightboxImage();
+        }
+
+        // Điều khiển bằng bàn phím
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('lightbox').style.display === 'flex') {
+                if (event.key === 'ArrowLeft') {
+                    changeImage(-1);
+                } else if (event.key === 'ArrowRight') {
+                    changeImage(1);
+                } else if (event.key === 'Escape') {
+                    closeLightbox(event);
+                }
+            }
+        });
+
+        // Swipe cho mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.getElementById('lightbox').addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        });
+
+        document.getElementById('lightbox').addEventListener('touchend', function(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) {
+                changeImage(1); // Swipe trái
+            } else if (touchEndX > touchStartX + 50) {
+                changeImage(-1); // Swipe phải
+            }
+        });
+    </script>
+
+    <footer>
+        <div class="container">
+            <p>Liên hệ: giabaoa172@gmail.com</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/NGBPhoenix"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ngb_phoenix08/"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/ngb1753-oss"><i class="fab fa-github"></i></a>
+            </div>
+            <p style="margin-top: 10px;">&copy; 2026 - CLB Truyền thông T&MC. Website được tạo bởi NGB-12A1.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLB T&MC - Đơn đăng ký</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Thêm Font Awesome cho icon (tùy chọn) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CÂU LẠC BỘ TRUYỀN THÔNG T&MC</h1>
+            <p class="sub-title">Trường THPT Tân Phước Khánh - Tiếp bước yêu thương</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li>Trường THPT Tân Phước Khánh</li>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                <li><a href="bo-suu-tap-anh.html">Bộ sưu tập ảnh</a></li>
+                <li><a href="am-nhac.html">Âm nhạc</a></li>
+                <li><a href="video.html">Video</a></li>
+                <li><a href="lien-he.html">Đăng ký tham gia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="section">
+                <h2><i class="fas fa-edit"></i> Đơn đăng ký tham gia</h2>
+                
+                <!-- Progress bar -->
+                <div class="form-progress">
+                    <div class="progress-step">
+                        <div class="step-number active">1</div>
+                        <div class="step-text active">Thông tin cơ bản</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Kỹ năng & Sở thích</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Đăng ký tham gia</div>
+                    </div>
+                </div>
+
+                <form class="supplement-form">
+                    <!-- PHẦN 1: THÔNG TIN CƠ BẢN -->
+                    <div class="form-header">
+                        <h3><i class="fas fa-user-circle"></i> Thông tin cơ bản</h3>
+                        <p>Vui lòng cung cấp thông tin cá nhân của bạn</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ho-dem"><i class="fas fa-user"></i> Họ và tên đệm:</label>
+                            <input type="text" id="ho-dem" placeholder="Nhập họ và tên đệm">
+                        </div>
+                        <div class="form-group">
+                            <label for="ten"><i class="fas fa-user"></i> Tên:</label>
+                            <input type="text" id="ten" placeholder="Nhập tên">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ngay-sinh"><i class="fas fa-calendar"></i> Ngày sinh:</label>
+                            <input type="date" id="ngay-sinh">
+                        </div>
+                        <div class="form-group">
+                            <label for="lop"><i class="fas fa-school"></i> Lớp:</label>
+                            <select id="lop">
+                                <option value="">-- Chọn lớp --</option>
+                                <option value="10A1">10A1</option>
+                                <option value="10A2">10A2</option>
+                                <option value="10A3">10A3</option>
+                                <option value="10A4">10A4</option>
+                                <option value="10A5">10A5</option>
+                                <option value="10A6">10A6</option>
+                                <option value="10A7">10A7</option>
+                                <option value="10A8">10A8</option>
+                                <option value="10A9">10A9</option>
+                                <option value="10A10">10A10</option>
+                                <option value="11A1">11A1</option>
+                                <option value="11A2">11A2</option>
+                                <option value="11A3">11A3</option>
+                                <option value="11A4">11A4</option>
+                                <option value="11A5">11A5</option>
+                                <option value="11A6">11A6</option>
+                                <option value="11A7">11A7</option>
+                                <option value="11A8">11A8</option>
+                                <option value="11A9">11A9</option>
+                                <option value="11A10">11A10</option>
+                                <option value="11A11">11A11</option>
+                                <option value="12A1">12A1</option>
+                                <option value="12A2">12A2</option>
+                                <option value="12A3">12A3</option>
+                                <option value="12A4">12A4</option>
+                                <option value="12A5">12A5</option>
+                                <option value="12A6">12A6</option>
+                                <option value="12A7">12A7</option>
+                                <option value="12A8">12A8</option>
+                                <option value="12A9">12A9</option>
+                                <option value="12A10">12A10</option>
+                                <option value="12A11">12A11</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                            <input type="email" id="email" placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="sdt"><i class="fas fa-phone"></i> Số điện thoại:</label>
+                            <input type="tel" id="sdt" placeholder="0123 456 789">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-venus-mars"></i> Giới tính:</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="gioi-tinh" id="nam" value="nam">
+                                <label for="nam">Nam</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="gioi-tinh" id="nu" value="nu">
+                                <label for="nu">Nữ</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="gioi-tinh" id="khac" value="khac">
+                                <label for="khac">Khác</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHẦN 2: KỸ NĂNG & SỞ THÍCH -->
+                    <div class="form-header" style="margin-top: 40px;">
+                        <h3><i class="fas fa-star"></i> Kỹ năng & Sở thích</h3>
+                        <p>Chọn những lĩnh vực bạn yêu thích</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-music"></i> Kĩ năng đang có và muốn có:</label>
+                        <div class="skills-container">
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="gt"> 
+                                <span>🎤 Giao tiếp</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="nhiep-anh"> 
+                                <span>📸 Nhiếp ảnh</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="tk"> 
+                                <span>🎨 Thiết kế</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="stnd"> 
+                                <span>🎞 Sáng tạo nội dung</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="ql"> 
+                                <span>👥 Quản lí</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="gqvd"> 
+                                <span>🧠 Giải quyết vấn đề</span>
+                            </label>
+                            <label class="skill-tag">
+                                <input type="checkbox" name="linh-vuc" value="kt"> 
+                                <span>🦾 Kỹ thuật</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-level-up-alt"></i> Ban muốn tham gia</label>
+                        <select id="ban">
+                            <option value="">-- Chọn ban --</option>
+                            <option value="ktha">Ban KỸ THUẬT - HÌNH ẢNH</option>
+                            <option value="ndbt">Ban NỘI DUNG - BIÊN TẬP</option>
+                            <option value="ns">Ban NHÂN SỰ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Thời gian có thể tham gia:</label>
+                        <div class="time-slots">
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-2" name="thoi-gian" value="thu-2">
+                                <label for="thu-2">Thứ 2</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-3" name="thoi-gian" value="thu-3">
+                                <label for="thu-3">Thứ 3</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-4" name="thoi-gian" value="thu-4">
+                                <label for="thu-4">Thứ 4</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-5" name="thoi-gian" value="thu-5">
+                                <label for="thu-5">Thứ 5</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-6" name="thoi-gian" value="thu-6">
+                                <label for="thu-6">Thứ 6</label>
+                            </div>
+                            <div class="time-slot">
+                                <input type="checkbox" id="thu-7" name="thoi-gian" value="thu-7">
+                                <label for="thu-7">Thứ 7</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHẦN 3: ĐĂNG KÝ THAM GIA -->
+                    <div class="form-header" style="margin-top: 40px;">
+                        <h3><i class="fas fa-clipboard-check"></i> Đăng ký tham gia</h3>
+                        <p>Hoàn tất đăng ký để trở thành thành viên chính thức</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-users"></i> Hình thức tham gia:</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" name="hinh-thuc" id="thanh-vien" value="thanh-vien">
+                                <label for="thanh-vien">Thành viên chính thức</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="hinh-thuc" id="cong-tac-vien" value="cong-tac-vien">
+                                <label for="cong-tac-vien">Cộng tác viên</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" name="hinh-thuc" id="ban-to-chuc" value="ban-to-chuc">
+                                <label for="ban-to-chuc">Ban tổ chức sự kiện</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-upload"></i> Tải lên tác phẩm (nếu có):</label>
+                        <div class="file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Kéo thả file vào đây hoặc</p>
+                            <label for="file-upload" class="btn-small">Chọn file</label>
+                            <input type="file" id="file-upload" multiple accept="image/*, video/*, audio/*">
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Hỗ trợ: Ảnh, Video, Âm thanh (tối đa 100MB)</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mong-muon"><i class="fas fa-comment"></i> Mong muốn khi tham gia CLB:</label>
+                        <textarea id="mong-muon" rows="4" placeholder="Bạn hy vọng học hỏi được điều gì? Bạn muốn đóng góp gì cho CLB?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="dieu-khoan" name="dieu-khoan">
+                            <label for="dieu-khoan">Tôi cam kết tuân thủ nội quy và tham gia đầy đủ các buổi sinh hoạt của CLB</label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="reset" class="btn-large btn-secondary">
+                            <i class="fas fa-undo"></i> Nhập lại
+                        </button>
+                        <button type="submit" class="btn-large btn-primary">
+                            <i class="fas fa-paper-plane"></i> Gửi đăng ký
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Thông báo sau khi gửi (ẩn mặc định) -->
+                <div class="card" style="margin-top: 30px; display: none;">
+                    <h3 style="color: var(--primary-blue);"><i class="fas fa-check-circle"></i> Đăng ký thành công!</h3>
+                    <p>Cảm ơn bạn đã cung cấp thông tin. CLB sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Liên hệ: giabaoa172@gmail.com</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/NGBPhoenix"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ngb_phoenix08/"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/ngb1753-oss"><i class="fab fa-github"></i></a>
+            </div>
+            <p style="margin-top: 10px;">&copy; 2026 - CLB Truyền thông T&MC. Website được tạo bởi NGB-12A1.</p>
+        </div>
+    </footer>
+</body>
+</html>

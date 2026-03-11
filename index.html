@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLB T&MC - Trang chủ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style> 
+        .media-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(30, 136, 229, 0.3);
+    border: 3px solid var(--white);
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.image-item {
+    background-color: var(--very-light-blue);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.image-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.image-item p {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+footer {
+    background: linear-gradient(135deg, var(--dark-blue), #1565c0);
+    color: var(--white);
+    text-align: center;
+    padding: 13px 0;
+    border-top: 5px solid var(--primary-red);
+    .social-links {
+            margin-top: 10px;
+        }
+
+    .social-links a {
+            color: blanchedalmond;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+
+footer p {
+    opacity: 0.9;
+    font-size: 1rem;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CÂU LẠC BỘ TRUYỀN THÔNG T&MC</h1>
+            <p class="sub-title">Trường THPT Tân Phước Khánh - Tiếp bước yêu thương</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li>Trường THPT Tân Phước Khánh</li>
+                <li><a href="index.html" class="active">Trang chủ</a></li>
+                <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+                <li><a href="bo-suu-tap-anh.html">Bộ sưu tập ảnh</a></li>
+                <li><a href="am-nhac.html">Âm nhạc</a></li>
+                <li><a href="video.html">Video</a></li>
+                <li><a href="lien-he.html">Đăng ký tham gia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section class="section">
+                <h2>Chào mừng đến với CLB Truyền Thông T&MC</h2>
+                <div class="card">
+                    <p>CLB Truyền Thông T&MC (TPK Media Club) Câu lạc bộ Truyền thông thuộc trường THPT Tân Phước Khánh. Đây không chỉ là nơi để học hỏi mà còn là nơi để các bạn "bung lụa" với những hoạt động siêu hấp dẫn, từ làm phim, tổ chức sự kiện, cho đến sáng tạo nội dung cho các kênh truyền thông của trường</p>
+                    <p style="margin-top: 15px;"><strong>⏰ Lịch sinh hoạt:</strong> 14h00 - 17h00, thứ 7 hàng tuần </p>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <a href="gioi-thieu.html" class="btn">Xem chi tiết</a>
+                        <a href="lien-he.html" class="btn btn-outline">Tham gia ngay</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Hoạt động nổi bật</h2>
+                <div class="image-grid">
+                    <div class="image-item">
+                        <img src="hd1.jpg" alt="Tiepsucmuathi">
+                        <p>Tiếp sức mùa thi</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="hd2.jpg" alt="Triển lãm">
+                        <p>Hội chợ Xuân</p>
+                    </div>
+                    <div class="image-item">
+                        <img src="hd3.jpg" alt="Vannghe">
+                        <p>Văn nghệ mừng ngày 26/3</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Liên hệ: giabaoa172@gmail.com</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/NGBPhoenix" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/ngb_phoenix08/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/ngb1753-oss" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+            <p style="margin-top: 10px;">&copy; 2026 - CLB Truyền thông T&MC. Website được tạo bởi NGB-12A1.</p>
+        </div>
+    </footer>
+</body>
+</html>
